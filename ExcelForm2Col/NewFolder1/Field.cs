@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,14 +9,17 @@ using System.Threading.Tasks;
 
 namespace ExcelForm2Col
 {
-    public class Field : IField
+    public class Field : ReactiveObject, IField
     {
-        int _depth = -1;
-        string _address;
+        private int _depth = -1;
+        private string _address;
+        private CellType _cellType;
+        private string _name;
         private int _firstColumn;
         private int _secondColumn;
         private int _firstRow;
         private int _secondRow;
+
 
         public string Address
         {
@@ -28,23 +33,27 @@ namespace ExcelForm2Col
 
         public CellType CellType
         {
-            get;
+            get { return _cellType; }
 
-            set;
+            set { this.RaiseAndSetIfChanged(ref _cellType, value); }
         }
 
         public string Name
         {
-            get;
+            get { return _name; }
 
-            set;
+            set { this.RaiseAndSetIfChanged(ref _name, value); }
         }
+
 
         public int Depth => _depth;
 
         public int FirstColumn => _firstColumn;
+
         public int SecondColumn => _secondColumn;
+
         public int FirstRow => _firstRow;
+
         public int SecondRow => _secondRow;
 
         private void setAddress(string address)
@@ -52,7 +61,7 @@ namespace ExcelForm2Col
             address = address.Replace("$","");
             if (!address.Contains(":"))
             {
-                _address = address;
+               
                 findColRow(address, out _firstColumn, out _firstRow);
                 _secondColumn = _firstColumn;
                 _secondRow = _firstRow;
@@ -70,6 +79,8 @@ namespace ExcelForm2Col
                 invert();
                 _depth = _secondRow - _firstRow;
             }
+            
+            this.RaiseAndSetIfChanged(ref _address, address);
         }
 
         private void findColRow(string bound,out int col,out int row)

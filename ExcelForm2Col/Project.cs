@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,10 @@ namespace ExcelForm2Col
         EF2C Ef2c { get; set; }
     }
 
-    public class Project:IProject
+    public class Project: ReactiveObject, IProject
     {
-        public string Name { get; set; }
+        private string _name;
+        public string Name { get { return _name; } set { this.RaiseAndSetIfChanged(ref _name, value); } }
 
         [Inject]
         public EF2C Ef2c { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +9,14 @@ using System.Threading.Tasks;
 
 namespace ExcelForm2Col
 {
-    public class Fields : IList<Field>, ICollection<Field>, IEnumerable<Field>, IEnumerable, IList, ICollection, IReadOnlyList<Field>, IReadOnlyCollection<Field>//, INotifyPropertyChanged
+    public class Fields : ReactiveList<IField>
+    {
+        public void toto()
+        {
+            
+        }
+    }
+  /*  public class Fields : IList<Field>, ICollection<Field>, IEnumerable<Field>, IEnumerable, IList, ICollection, IReadOnlyList<Field>, IReadOnlyCollection<Field>//, INotifyPropertyChanged
     {
         int _depth;
         private List<Field> ilist = new List<Field>();
@@ -169,5 +177,5 @@ namespace ExcelForm2Col
         }
 
         public List<Field> InternalList => ilist;
-    }
+    }*/
 }

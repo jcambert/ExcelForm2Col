@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ExcelForm2Col
 {
-    public class Mapping : IMapping
+    public class Mapping : ReactiveObject, IMapping
     {
         private readonly Fields fields = new Fields();
-        private readonly List<string> names = new List<string>();
+        private readonly ReactiveList<string> names = new ReactiveList<string>();
 
         public Fields Fields => fields;
 

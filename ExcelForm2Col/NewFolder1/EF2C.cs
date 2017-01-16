@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using Ninject.Extensions.Logging;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,13 +21,15 @@ namespace ExcelForm2Col
         void Start();
     }
 
-    public class EF2C : IEF2C
+    public class EF2C :ReactiveObject, IEF2C
     {
         Columns columns = new Columns();
-        
-        public SourceType SourceType { get; set; }
 
-        public string Source { get; set; }
+        private SourceType _sourceType;
+        public SourceType SourceType { get { return _sourceType; } set { this.RaiseAndSetIfChanged(ref _sourceType, value); } }
+
+        private string _source;
+        public string Source { get { return _source; } set { this.RaiseAndSetIfChanged(ref _source, value); } }
 
         [Inject]
         public IMapping Mapping { get; set; }
@@ -77,7 +80,7 @@ namespace ExcelForm2Col
             }
         }
 
-        private void readField(Excel_._Worksheet xlWorksheet, Field field)
+        private void readField(Excel_._Worksheet xlWorksheet, IField field)
         {
             var range = xlWorksheet.Range[field.Address];
             if (field.Address.Contains(":"))

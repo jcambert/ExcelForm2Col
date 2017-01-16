@@ -21,16 +21,7 @@ namespace ExcelForm2Col
         {
             InitializeComponent();
             Project = project;
-            //dataGridView1.AutoGenerateColumns = true;
-            Project.Ef2c.Mapping.Fields.Add(new Field { Address = "E7", Name = "test7", CellType = CellType.Chaine });
-            dataGridView1.DataSource = project.Ef2c.Mapping.Fields;
-            Project.Ef2c.Mapping.Fields.Add(new Field { Address = "E8", Name = "test8", CellType = CellType.Chaine });
-
-            List<Person> persons = new List<Person>();
-            persons.Add(new Person { Name = "AMBERT" });
-            dataGridView2.DataSource = persons;
-
-            persons.Add(new Person { Name = "GUINDER" });
+            
         }
         [Inject]
         public IKernel Kernel { get; set; }
@@ -51,6 +42,25 @@ namespace ExcelForm2Col
             wbk.Activate();
             Excel_.Worksheet s = wbk.ActiveSheet;
             s.SelectionChange += S_SelectionChange;*/
+
+            //dataGridView1.AutoGenerateColumns = true;
+            Project.Ef2c.Mapping.Fields.CountChanged.Subscribe(ev => {
+                Logger.Debug("Datagrid Count change to:" + ev);
+                dataGridView1.DataSource = null;
+                dataGridView1.DataSource = Project.Ef2c.Mapping.Fields;
+            });
+
+            Project.Ef2c.Mapping.Fields.Add(new Field { Address = "E7", Name = "test7", CellType = CellType.Chaine });
+            Project.Ef2c.Mapping.Fields.Add(new Field { Address = "E8", Name = "test8", CellType = CellType.Chaine });
+
+            List<Person> persons = new List<Person>();
+            persons.Add(new Person { Name = "AMBERT" });
+            dataGridView2.DataSource = persons;
+
+            persons.Add(new Person { Name = "GUINDER" });
+
+            Project.Ef2c.Mapping.Fields.Add(new Field { Address = "E9", Name = "test9", CellType = CellType.Chaine });
+           
         }
 
        
@@ -98,9 +108,8 @@ namespace ExcelForm2Col
             var result = frm.ShowDialog();
             if (result == DialogResult.OK)
             {
-                Project.Ef2c.Mapping.Fields.Add(new Field { Address = "E9", Name = "test9", CellType = CellType.Chaine });
+               // Project.Ef2c.Mapping.Fields.Add(new Field { Address = "E9", Name = "test9", CellType = CellType.Chaine });
                 Project.Ef2c.Mapping.Fields.Add(frm.Field);
-               
             }
         }
     }
